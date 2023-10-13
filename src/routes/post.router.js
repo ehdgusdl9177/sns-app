@@ -1,6 +1,7 @@
 const { request } = require("express");
 const express = require("express");
 const { checkAuthenticated } = require("../middleware/auth");
+const Comment = requrie("../models/comments.model");
 const Post = require("../models/posts.model");
 const router = express.Router();
 
