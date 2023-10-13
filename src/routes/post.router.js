@@ -17,6 +17,29 @@ const storageEngine = multer.diskStorage({
 
 const upload = multer({ storage: storageEngine }).single("image");
 
+router.post("/", checkAuthenticated, upload, (req, res) => {
+  let desc = req.body.desc;
+  let image = req.file ? req.file.filename : "";
+  Post.create(
+    {
+      image: image,
+      description: desc,
+      author: {
+        id: req.user._id,
+        username: req.user.username,
+      },
+    },
+    (err, _) => {
+      if (err) {
+        console.log("error");
+        next(err);
+      } else {
+        res.redirect("back");
+      }
+    }
+  );
+});
+
 router.get("/", checkAuthenticated, (req, res) => {
   Post.findOne()
     .populate("comment")
